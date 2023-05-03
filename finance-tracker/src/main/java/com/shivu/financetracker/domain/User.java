@@ -16,6 +16,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import javax.persistence.OneToMany;
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 
 import java.util.Objects;
 
@@ -30,9 +36,19 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
     private Long id;
     @NotBlank(message = "Name is mandatory")
     private String name;
+
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // private List<Income> incomes;
+
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // private List<Expense> expenses;
+
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // private List<Savings> savings;
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Please provide a valid email address")
