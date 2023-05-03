@@ -1,13 +1,16 @@
 package com.shivu.financetracker.service;
 
 import java.util.List;
-import com.shivu.financetracker.dto.CreateUserdto;
-import com.shivu.financetracker.dto.UserListDto;
+
+import com.shivu.financetracker.dto.UserDTO;
+
+
+import com.shivu.financetracker.util.Status;
 
 public interface UserService {
-    Integer createNewUser(CreateUserdto dto);
+    Status registerUser(UserDTO userDto);
 
-    List<CreateUserdto> findUsers();
+    Status loginUser(UserDTO userDto);
 
-    List<UserListDto> findCustomer(String ss);
+    Status logUserOut(UserDTO userDto);
 }

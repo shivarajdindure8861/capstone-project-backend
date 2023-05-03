@@ -1,38 +1,66 @@
 package com.shivu.financetracker.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import javax.transaction.Transactional;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.shivu.financetracker.dto.CreateUserdto;
-import com.shivu.financetracker.dto.UserListDto;
+import com.shivu.financetracker.domain.User;
+import com.shivu.financetracker.dto.UserDTO;
 import com.shivu.financetracker.repository.UserRepository;
-import com.shivu.financetracker.util.UserMapper;
-
-import lombok.AllArgsConstructor;
+import com.shivu.financetracker.util.Status;
 
 @Service
-@AllArgsConstructor
-@Transactional
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final UserMapper mapper;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
-    public Integer createUser(CreateUserdto dto) {
-        return null;
+    public Status registerUser(UserDTO userDto) {
+        // Check if the email already exists in the database
+        Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
+        if (userOptional.isPresent()) {
+            return Status.USER_ALREADY_EXISTS;
+        }
+
+        // Map the DTO to a User object and save it to the database
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        userRepository.save(user);
+
+        return Status.SUCCESS;
     }
 
     @Override
-    public List<CreateUserdto> findUsers() {
-        return null;
+    public Status loginUser(UserDTO userDto) {
+        // Find the user with the specified email and password
+        Optional<User> userOptional = userRepository.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setLoggedIn(true);
+            userRepository.save(user);
+            return Status.SUCCESS;
+        }
+
+        return Status.FAILURE;
     }
 
     @Override
-    public List<UserListDto> findCustomer(String ss) {
-        return null;
+    public Status logUserOut(UserDTO userDto) {
+        // Find the user with the specified email
+        Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setLoggedIn(false);
+            userRepository.save(user);
+            return Status.SUCCESS;
+        }
+
+        return Status.FAILURE;
     }
 
 }

@@ -1,36 +1,38 @@
 package com.shivu.financetracker.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import com.shivu.financetracker.dto.AppResponse;
-import com.shivu.financetracker.dto.CreateUserdto;
-import com.shivu.financetracker.dto.UserListDto;
+import com.shivu.financetracker.dto.UserDTO;
 import com.shivu.financetracker.service.UserService;
+import com.shivu.financetracker.util.Status;
 
-import lombok.AllArgsConstructor;
+import javax.validation.Valid;
 
-@RequestMapping(value = "/user")
-@AllArgsConstructor
 @CrossOrigin
 @RestController
+@RequestMapping("")
 public class UserController {
-    private final UserService service;
 
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppResponse<Integer>> createNewUser(@RequestBody CreateUserdto dto) {
-        final Integer sts = service.createNewUser(dto);
-        final AppResponse<Integer> response = AppResponse.<Integer>builder()
-                .sts("Success")
-                .msg("User Created Successfully")
-                .bd(sts)
-                .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/register")
+    public Status registerUser(@Valid @RequestBody UserDTO userDto) {
+        return userService.registerUser(userDto);
+    }
+
+    @PostMapping("/login")
+    public Status loginUser(@Valid @RequestBody UserDTO userDto) {
+        return userService.loginUser(userDto);
+    }
+
+    @PostMapping("/logout")
+    public Status logUserOut(@Valid @RequestBody UserDTO userDto) {
+        return userService.logUserOut(userDto);
     }
 }
