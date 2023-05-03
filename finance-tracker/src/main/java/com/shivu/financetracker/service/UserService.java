@@ -1,7 +1,5 @@
 package com.shivu.financetracker.service;
 
-import java.util.List;
-
 import com.shivu.financetracker.dto.UserDTO;
 
 import com.shivu.financetracker.util.Status;
