@@ -30,20 +30,21 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "financeManagement")
+@Table(name = "finance")
 public class Finance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "Income/Expense")
+    @Column(name = "Income_Expense")
     @Enumerated(EnumType.STRING)
     private FinanceType financeType;
-    @Column(name = "Tag")
+    @Column(name = "tag")
     private String tag;
-    @Column(name = "processedDate")
-    private LocalDate invDt;
-    private Double amt;
+    @Column(name = "processed_Date")
+    private LocalDate processedDate;
+    @Column(name = "amount")
+    private Double amount;
     @ManyToOne
-    @JoinColumn(name = "users", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 }

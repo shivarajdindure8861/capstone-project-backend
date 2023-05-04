@@ -16,6 +16,6 @@ public class UserMapper {
     }
 
     public UserDTO todto(User domain) {
-        return new UserDTO(domain.getName(), domain.getEmail(), domain.getPassword());
+        return new UserDTO(domain.getId(), domain.getName(), domain.getEmail(), domain.getPassword());
     }
 }

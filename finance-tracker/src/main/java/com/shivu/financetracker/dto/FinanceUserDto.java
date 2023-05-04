@@ -9,15 +9,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FinanceDto {
-    private Long id;
+public class FinanceUserDto {
+    private String client;
+    private LocalDate invDt;
     private FinanceType financeType;
     private String tag;
-    private LocalDate invDt;
     private Double amt;
-    private UserDTO userDto;
+    private Long userId;
+
 }
