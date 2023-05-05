@@ -1,8 +1,9 @@
 package com.shivu.financetracker.domain;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,12 +30,12 @@ public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "budget_id")
-    private Long budgetId;
+    private String category;
     private Double amount;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    private Boolean recurring;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

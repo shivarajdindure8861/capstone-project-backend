@@ -1,9 +1,11 @@
 package com.shivu.financetracker.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -16,11 +18,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import javax.persistence.OneToMany;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 import java.util.Objects;
@@ -35,20 +35,11 @@ import java.util.Objects;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
+    @GeneratedValue
     private Long id;
+
     @NotBlank(message = "Name is mandatory")
     private String name;
-
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    // private List<Income> incomes;
-
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    // private List<Expense> expenses;
-
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    // private List<Savings> savings;
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Please provide a valid email address")
@@ -60,35 +51,21 @@ public class User {
 
     private boolean loggedIn;
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Finance> finance;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof User))
-            return false;
-        User user = (User) o;
-        return Objects.equals(email, user.email);
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Savings> saving;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Profile> profile;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", loggedIn=" + loggedIn +
-                '}';
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Budget> budget;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<LinkedAccounts> account;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<LinkedCards> card;
 }

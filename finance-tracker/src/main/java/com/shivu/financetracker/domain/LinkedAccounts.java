@@ -6,30 +6,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Builder
-@Table(name = "income")
-public class Income {
+@Setter
+@Getter
+public class LinkedAccounts {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long incomeId;
-    private String source;
-    private Double amount;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String accountNumber;
+    private String accountHolderName;
+    private String bankName;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 }
