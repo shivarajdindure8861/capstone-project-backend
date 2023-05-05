@@ -33,7 +33,7 @@ public class SavingsController {
     private final SavingsService service;
 
     @CrossOrigin
-    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppResponse<Integer>> createNewSavings(@RequestBody SavingsDto dto) {
 
         final Integer sts = service.createNewSavings(dto);
@@ -60,7 +60,7 @@ public class SavingsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/allsavings", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppResponse<List<SavingsDto>>> allSavings() {
         List<SavingsDto> finances = service.all();
 

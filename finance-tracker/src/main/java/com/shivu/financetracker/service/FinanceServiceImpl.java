@@ -17,6 +17,7 @@ import com.shivu.financetracker.exception.UserNotFoundException;
 import com.shivu.financetracker.repository.FinanceRepository;
 import com.shivu.financetracker.repository.UserRepository;
 import com.shivu.financetracker.util.FinanceMapper;
+import com.shivu.financetracker.util.FinanceType;
 
 import lombok.AllArgsConstructor;
 
@@ -85,6 +86,26 @@ public class FinanceServiceImpl implements FinanceService {
                 .stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Double getTotalIncome() {
+        return repository.getTotalAmountByType(FinanceType.INCOME);
+    }
+
+    @Override
+    public Double getTotalExpenses() {
+        return repository.getTotalAmountByType(FinanceType.EXPENSES);
+    }
+
+    @Override
+    public Double getTotalIncomeByTagAndUser(String tag, Long userId) {
+        return repository.getTotalAmountByTypeAndTagAndUser(FinanceType.INCOME, tag, userId);
+    }
+
+    @Override
+    public List<Object[]> findTotalAmountByTagAndType(FinanceType financeType) {
+        return repository.findTotalAmountByTagAndType(financeType.INCOME);
     }
 
 }

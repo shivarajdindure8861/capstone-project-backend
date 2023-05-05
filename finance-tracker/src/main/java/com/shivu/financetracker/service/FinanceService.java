@@ -6,6 +6,7 @@ import com.shivu.financetracker.dto.FinanceDto;
 import com.shivu.financetracker.dto.FinanceUserDto;
 import com.shivu.financetracker.exception.FinanceNotFoundException;
 import com.shivu.financetracker.exception.UserNotFoundException;
+import com.shivu.financetracker.util.FinanceType;
 
 public interface FinanceService {
     Integer createNewFinance(FinanceDto dto);
@@ -22,4 +23,11 @@ public interface FinanceService {
 
     List<FinanceDto> allUserFinances(Long id) throws UserNotFoundException;
 
+    Double getTotalIncome();
+
+    Double getTotalExpenses();
+
+    Double getTotalIncomeByTagAndUser(String tag, Long userID);
+
+    List<Object[]> findTotalAmountByTagAndType(FinanceType financeType);
 }

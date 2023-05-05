@@ -26,6 +26,7 @@ public class SavingsDto {
     private Long id;
     @NotBlank(message = "category is required")
     private String category;
+
     @NotNull(message = "Goal amount is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Goal amount must be greater than 0")
     private Double goal;

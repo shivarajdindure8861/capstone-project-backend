@@ -27,7 +27,7 @@ public class FinanceMapper {
                 domain.getTag(),
                 domain.getProcessedDate(),
                 domain.getAmount(),
-                userMapper.todto(domain.getUser()));
+                userMapper.toDto(domain.getUser()));
     }
 
 }

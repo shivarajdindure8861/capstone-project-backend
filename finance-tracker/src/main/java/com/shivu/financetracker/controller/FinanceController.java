@@ -19,6 +19,7 @@ import com.shivu.financetracker.dto.AppResponse;
 import com.shivu.financetracker.dto.FinanceDto;
 import com.shivu.financetracker.dto.FinanceUserDto;
 import com.shivu.financetracker.service.FinanceService;
+import com.shivu.financetracker.util.FinanceType;
 
 import lombok.AllArgsConstructor;
 
@@ -31,7 +32,7 @@ public class FinanceController {
     private final FinanceService service;
 
     @CrossOrigin
-    @PostMapping(value = "/finance", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppResponse<Integer>> createNewFinance(@RequestBody FinanceDto dto) {
 
         final Integer sts = service.createNewFinance(dto);
@@ -99,12 +100,12 @@ public class FinanceController {
     }
 
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppResponse<List<FinanceDto>>> allCustomerInvoices(@PathVariable Long id) {
+    public ResponseEntity<AppResponse<List<FinanceDto>>> allCustomerFinances(@PathVariable Long id) {
         List<FinanceDto> invoices = service.allUserFinances(id);
 
         AppResponse<List<FinanceDto>> response = AppResponse.<List<FinanceDto>>builder()
                 .sts("success")
-                .msg("Users FInacne")
+                .msg("Users Finacne")
                 .bd(invoices)
                 .build();
 
@@ -124,5 +125,27 @@ public class FinanceController {
                 .build();
 
         return ResponseEntity.ok().body(response);
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/tag", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AppResponse<List<Object[]>>> getFinanceByTag(@PathVariable Long userId) {
+        List<Object[]> result = service.findTotalAmountByTagAndType(FinanceType.INCOME);
+        AppResponse<List<Object[]>> response = AppResponse.<List<Object[]>>builder()
+                .sts("success")
+                .msg("Total amount by tag")
+                .bd(result)
+                .build();
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/total-expenses")
+    public Double getTotalExpenses() {
+        return service.getTotalExpenses();
+    }
+
+    @GetMapping("/total-income")
+    public Double getTotalIncome() {
+        return service.getTotalIncome();
     }
 }
