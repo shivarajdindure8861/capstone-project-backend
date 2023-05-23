@@ -2,6 +2,8 @@ package com.shivu.financetracker.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shivu.financetracker.dto.AppResponse;
 import com.shivu.financetracker.dto.FinanceDto;
 import com.shivu.financetracker.dto.FinanceUserDto;
+import com.shivu.financetracker.repository.FinanceRepository;
 import com.shivu.financetracker.service.FinanceService;
-import com.shivu.financetracker.util.FinanceType;
 
 import lombok.AllArgsConstructor;
 
@@ -29,11 +31,10 @@ import lombok.AllArgsConstructor;
 @RequestMapping(value = "/finance")
 
 public class FinanceController {
-    private final FinanceService service;
 
     @CrossOrigin
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppResponse<Integer>> createNewFinance(@RequestBody FinanceDto dto) {
+    public ResponseEntity<AppResponse<Integer>> createNewFinance(@Valid @RequestBody FinanceDto dto) {
 
         final Integer sts = service.createNewFinance(dto);
 
@@ -47,7 +48,7 @@ public class FinanceController {
 
     @CrossOrigin
     @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppResponse<Integer>> createNewCustomerInvoice(@RequestBody FinanceUserDto dto) {
+    public ResponseEntity<AppResponse<Integer>> createNewCustomerInvoice(@Valid @RequestBody FinanceUserDto dto) {
 
         final Integer sts = service.createNewFinance(dto);
 
@@ -59,7 +60,8 @@ public class FinanceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    @GetMapping(value = "/user-finances", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppResponse<List<FinanceDto>>> allFinances() {
         List<FinanceDto> finances = service.all();
 
@@ -72,7 +74,8 @@ public class FinanceController {
         return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    @DeleteMapping(value = "delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppResponse<Integer>> deleteInvoice(@PathVariable Long id) {
 
         final Integer sts = service.deleteFinance(id);
@@ -86,7 +89,7 @@ public class FinanceController {
         return ResponseEntity.status(200).body(response);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppResponse<FinanceDto>> getFinanceById(@PathVariable Long id) {
 
         final FinanceDto dto = service.fetchFinanceDetails(id);
@@ -99,24 +102,46 @@ public class FinanceController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppResponse<List<FinanceDto>>> allCustomerFinances(@PathVariable Long id) {
-        List<FinanceDto> invoices = service.allUserFinances(id);
+    // @CrossOrigin
+    // @GetMapping(value = "/user/{id}", produces =
+    // MediaType.APPLICATION_JSON_VALUE)
+    // public ResponseEntity<AppResponse<List<FinanceDto>>>
+    // allCustomerFinances(@PathVariable Long id) {
+    // List<FinanceDto> finances = service.allUserFinances(id);
 
-        AppResponse<List<FinanceDto>> response = AppResponse.<List<FinanceDto>>builder()
-                .sts("success")
-                .msg("Users Finacne")
-                .bd(invoices)
-                .build();
+    // AppResponse<List<FinanceDto>> response =
+    // AppResponse.<List<FinanceDto>>builder()
+    // .sts("success")
+    // .msg("Users FInacne")
+    // .bd(finances)
+    // .build();
 
-        return ResponseEntity.ok().body(response);
+    // return ResponseEntity.ok().body(response);
+    // }
+
+    @CrossOrigin
+    @GetMapping("/total-income")
+    public Double getTotalIncome() {
+        return service.getTotalIncome();
     }
 
     @CrossOrigin
-    @PutMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppResponse<Integer>> updateNewInvoice(@RequestBody FinanceDto dto) {
+    @GetMapping("/total-expenses")
+    public Double getTotalExpenses() {
+        return service.getTotalExpenses();
+    }
 
-        final Integer sts = service.updateFinanceDetails(dto);
+    // @GetMapping("/tag")
+    // public ResponseEntity<List<Object[]>> getIncomeByTag() {
+    // List<Object[]> result = service.findTotalAmountByTagAndType();
+    // return new ResponseEntity<>(result, HttpStatus.OK);
+    // }
+
+    @CrossOrigin
+    @PutMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AppResponse<Integer>> updateNewFinance(@Valid @RequestBody FinanceDto dto) {
+
+        final Integer sts = service.updateFinance(dto);
 
         final AppResponse<Integer> response = AppResponse.<Integer>builder()
                 .sts("success")
@@ -125,27 +150,5 @@ public class FinanceController {
                 .build();
 
         return ResponseEntity.ok().body(response);
-    }
-
-    @CrossOrigin
-    @GetMapping(value = "/tag", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppResponse<List<Object[]>>> getFinanceByTag(@PathVariable Long userId) {
-        List<Object[]> result = service.findTotalAmountByTagAndType(FinanceType.INCOME);
-        AppResponse<List<Object[]>> response = AppResponse.<List<Object[]>>builder()
-                .sts("success")
-                .msg("Total amount by tag")
-                .bd(result)
-                .build();
-        return ResponseEntity.ok().body(response);
-    }
-
-    @GetMapping("/total-expenses")
-    public Double getTotalExpenses() {
-        return service.getTotalExpenses();
-    }
-
-    @GetMapping("/total-income")
-    public Double getTotalIncome() {
-        return service.getTotalIncome();
     }
 }

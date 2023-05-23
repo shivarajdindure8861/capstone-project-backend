@@ -2,32 +2,28 @@ package com.shivu.financetracker.service;
 
 import java.util.List;
 
+import com.shivu.financetracker.domain.User;
 import com.shivu.financetracker.dto.FinanceDto;
 import com.shivu.financetracker.dto.FinanceUserDto;
 import com.shivu.financetracker.exception.FinanceNotFoundException;
-import com.shivu.financetracker.exception.UserNotFoundException;
-import com.shivu.financetracker.util.FinanceType;
 
 public interface FinanceService {
-    Integer createNewFinance(FinanceDto dto);
+    Integer createNewFinance(FinanceDto finance);
 
     Integer createNewFinance(FinanceUserDto dto);
 
     List<FinanceDto> all();
 
-    Integer deleteFinance(Long id) throws FinanceNotFoundException;
-
     FinanceDto fetchFinanceDetails(Long id) throws FinanceNotFoundException;
 
-    Integer updateFinanceDetails(FinanceDto finance);
+    List<User> allUserFinances(Long id);
 
-    List<FinanceDto> allUserFinances(Long id) throws UserNotFoundException;
+    Integer deleteFinance(Long id) throws FinanceNotFoundException;
+
+    Integer updateFinance(FinanceDto finance);
 
     Double getTotalIncome();
 
     Double getTotalExpenses();
 
-    Double getTotalIncomeByTagAndUser(String tag, Long userID);
-
-    List<Object[]> findTotalAmountByTagAndType(FinanceType financeType);
 }

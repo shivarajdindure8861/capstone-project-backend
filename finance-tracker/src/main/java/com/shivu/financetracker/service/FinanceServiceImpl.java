@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
 @Transactional
 @AllArgsConstructor
 public class FinanceServiceImpl implements FinanceService {
+
     private final FinanceRepository repository;
     private final UserRepository userRepository;
     private final FinanceMapper mapper;
@@ -32,24 +33,6 @@ public class FinanceServiceImpl implements FinanceService {
     @Override
     public Integer createNewFinance(FinanceDto dto) {
         repository.save(mapper.toDomain(dto));
-
-        return 1;
-    }
-
-    @Override
-    public Integer createNewFinance(FinanceUserDto dto) {
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("user not found"));
-
-        Finance finance = new Finance();
-        finance.setAmount(dto.getAmt());
-        finance.setFinanceType(dto.getFinanceType());
-        finance.setId(dto.getUserId());
-        finance.setProcessedDate(dto.getInvDt());
-        finance.setTag(dto.getTag());
-        finance.setUser(user);
-
-        repository.save(finance);
         return 1;
     }
 
@@ -59,7 +42,6 @@ public class FinanceServiceImpl implements FinanceService {
                 .stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -71,21 +53,32 @@ public class FinanceServiceImpl implements FinanceService {
     @Override
     public FinanceDto fetchFinanceDetails(Long id) throws FinanceNotFoundException {
         Optional<Finance> op = repository.findById(id);
-        return mapper.toDto(op.orElseThrow(() -> new FinanceNotFoundException("Finance id " + id + " not found")));
+        return mapper.toDto(op.orElseThrow(() -> new FinanceNotFoundException("Finance " + id + " Not Found")));
     }
 
     @Override
-    public Integer updateFinanceDetails(FinanceDto finance) {
+    public Integer updateFinance(FinanceDto finance) {
         repository.save(mapper.toDomain(finance));
         return 1;
     }
 
     @Override
-    public List<FinanceDto> allUserFinances(Long id) throws UserNotFoundException {
-        return repository.findById(id)
-                .stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+    public Integer createNewFinance(FinanceUserDto dto) {
+
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
+
+        Finance finance = new Finance();
+        finance.setAmount(dto.getAmt());
+        finance.setFinanceType(dto.getFinanceType());
+        finance.setId(dto.getUserId());
+        finance.setTag(dto.getTag());
+        finance.setProcessedDate(dto.getInvDt());
+        finance.setUser(user);
+
+        repository.save(finance);
+
+        return 1;
     }
 
     @Override
@@ -99,13 +92,8 @@ public class FinanceServiceImpl implements FinanceService {
     }
 
     @Override
-    public Double getTotalIncomeByTagAndUser(String tag, Long userId) {
-        return repository.getTotalAmountByTypeAndTagAndUser(FinanceType.INCOME, tag, userId);
-    }
+    public List<User> allUserFinances(Long id) {
+        return repository.findAllUserById(id);
 
-    @Override
-    public List<Object[]> findTotalAmountByTagAndType(FinanceType financeType) {
-        return repository.findTotalAmountByTagAndType(financeType.INCOME);
     }
-
 }

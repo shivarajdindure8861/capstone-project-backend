@@ -10,4 +10,6 @@ public interface UserService {
     Status loginUser(UserDTO userDto);
 
     Status logUserOut(UserDTO userDto);
+
+    Status findByEmail(UserDTO userDto);
 }

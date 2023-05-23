@@ -19,13 +19,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Status registerUser(UserDTO userDto) {
-        // Check if the email already exists in the database
+
         Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
         if (userOptional.isPresent()) {
             return Status.USER_ALREADY_EXISTS;
         }
 
-        // Map the DTO to a User object and save it to the database
         User user = new User();
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Status loginUser(UserDTO userDto) {
-        // Find the user with the specified email and password
+
         Optional<User> userOptional = userRepository.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Status logUserOut(UserDTO userDto) {
-        // Find the user with the specified email
+
         Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -63,4 +62,13 @@ public class UserServiceImpl implements UserService {
         return Status.FAILURE;
     }
 
+    @Override
+    public Status findByEmail(UserDTO userDTO) {
+        Optional<User> userOptional = userRepository.findByEmail(userDTO.getEmail());
+        if (userOptional.isPresent()) {
+            return Status.SUCCESS;
+
+        }
+        return Status.FAILURE;
+    }
 }
