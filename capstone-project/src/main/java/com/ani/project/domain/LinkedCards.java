@@ -1,8 +1,7 @@
-package com.shivu.financetracker.domain;
+package com.ani.project.domain;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,26 +15,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@ToString
-@Table(name = "budget")
-public class Budget {
+@Table(name= "cards")
+public class LinkedCards {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "budget_id")
-    private String category;
-    private Double amount;
-    private Boolean recurring;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String cardNumber;
+    private String cardHolderName;
+    private LocalDate expirationDate;
+
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private User user;  
+    
 }

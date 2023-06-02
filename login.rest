@@ -1,0 +1,25 @@
+POST http://localhost:8080/users/register 
+Content-Type: application/json
+
+{ "name":"yellow", "email": "testing@gmail.com", "password": "testingit" }
+
+### 
+POST http://localhost:8080/users/register 
+Content-Type: application/json
+
+{ "name":"gettok", "email": "userid1@gmail.com", "password": "yello" }
+
+### 
+POST http://localhost:8080/users/login 
+Content-Type: application/json
+
+{ "email": "yellow@gmail.com", "password": "yelloviw" } 
+### 
+DELETE http://localhost:8080/users/all
+
+### 
+Forgot Password 
+POST http://localhost:8080/users/forgot 
+Content-Type: application/json
+
+ {"email": "yellow"}

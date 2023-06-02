@@ -1,4 +1,5 @@
 ### Add a finance info 
+
 POST http://localhost:8080/finance/user 
 Content-Type: application/json
 
@@ -6,8 +7,9 @@ Content-Type: application/json
 "userId": 1, "id": 8, "financeType": "EXPENSES", "tag": "investment", "invDt": "2023-12-23", "amt": 2300
 }
 
-### update a Finance tag
- POST http://localhost:8080/finance/user 
+### update a Finance tag 
+
+POST http://localhost:8080/finance/user 
 Content-Type: application/json
 
 {
@@ -15,19 +17,20 @@ Content-Type: application/json
 }
 
 ### All the Finances 
+
 GET http://localhost:8080/finance/user-finances
 
-### Specific Finance 
-GET http://localhost:8080/finance/user/11
+### Specific Finance
+ GET http://localhost:8080/finance/user/11
 
-### GET
- http://localhost:8080/budget/income/salary/sum
+### 
+GET http://localhost:8080/budget/income/salary/sum
 
-### GET 
-http://localhost:8080/finance/total-income
+### 
+GET http://localhost:8080/finance/total-income
 
-### GET 
-http://localhost:8080/finance/total-expenses
+### 
+GET http://localhost:8080/finance/total-expenses
 
-### GET 
-http://localhost:8080/finance/summary
+### 
+GET http://localhost:8080/finance/summary

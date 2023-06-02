@@ -1,4 +1,7 @@
-package com.shivu.financetracker.domain;
+package com.ani.project.domain;
+
+import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,17 +19,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
+@AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "users")
 public class User {
 
@@ -50,6 +49,10 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Finance> finance;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Savings> saving;
+
+
+
 }

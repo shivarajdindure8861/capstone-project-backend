@@ -28,8 +28,8 @@ public class LinkedCards {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String cardNumber;
-    private String cardHolderName;
     private LocalDate expirationDate;
+    private String cardHolderName;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)

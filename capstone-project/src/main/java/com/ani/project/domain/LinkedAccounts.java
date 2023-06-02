@@ -1,4 +1,4 @@
-package com.shivu.financetracker.domain;
+package com.ani.project.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,21 +14,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
-@Table(name = "LinkedAccounts")
+@Table(name= "accounts")
 public class LinkedAccounts {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     private String accountNumber;
     private String accountHolderName;
     private String bankName;
 
+
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private User user;  
+
 }
